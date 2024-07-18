@@ -57,6 +57,7 @@ function gameController(
     { name: playerTwoName, token: 2 },
   ];
   let activePlayer = players[0];
+  let gameEnded = false;
   const switchTurn = () => {
     activePlayer = activePlayer === players[0] ? players[1] : players[0];
   };
@@ -64,9 +65,52 @@ function gameController(
 
   const printNewRound = () => {
     board.printBoard();
-    console.log(`${getActivePlayer().name}'s turn.`);
+    if (!gameEnded) {
+      console.log(`${getActivePlayer().name}'s turn.`);
+    }
+  };
+  // determinig who wins
+  const checkForWinner = () => {
+    const boardArray = board.getBoard();
+    for (let row = 0; row < 3; row++) {
+      if (
+        boardArray[row][0].getValue() !== 0 &&
+        boardArray[row][0].getValue() === boardArray[row][1].getValue() &&
+        boardArray[row][1].getValue() === boardArray[row][2].getValue()
+      )
+        return boardArray[row][0].getValue();
+    }
+    // Check columns
+    for (let col = 0; col < 3; col++) {
+      if (
+        boardArray[0][col].getValue() != 0 &&
+        boardArray[0][col].getValue() === boardArray[1][col].getValue() &&
+        boardArray[1][col].getValue() === boardArray[2][col].getValue()
+      )
+        return boardArray[col][0].getValue();
+    }
+    // Check diagonal
+    if (
+      boardArray[0][0].getValue() != 0 &&
+      boardArray[0][0].getValue() === boardArray[1][1].getValue() &&
+      boardArray[1][1].getValue() === boardArray[2][2].getValue()
+    ) {
+      return boardArray[0][0].getValue();
+    }
+    if (
+      boardArray[0][2].getValue() != 0 &&
+      boardArray[0][2].getValue() === boardArray[1][1].getValue() &&
+      boardArray[1][1].getValue() === boardArray[2][0].getValue()
+    ) {
+      return boardArray[0][2].getValue();
+    }
+    return null;
   };
   const playRound = (row, column) => {
+    if (gameEnded) {
+      console.log("The game has ended.");
+      return;
+    }
     if (board.getValue(row, column) !== 0) {
       console.log("Invalid move: Cell is already occupied. Try again");
       return;
@@ -79,6 +123,16 @@ function gameController(
     );
     board.makeMove(row, column, getActivePlayer().token);
 
+    // Check for winner
+    const winner = checkForWinner();
+    if (winner) {
+      console.log(`${getActivePlayer().name} wins!`);
+      gameEnded = true;
+      game.board.printBoard();
+
+      return;
+    }
+
     // Switch player turn
     switchTurn();
     printNewRound();
@@ -87,14 +141,12 @@ function gameController(
   return {
     getActivePlayer,
     playRound,
+    board,
   };
 }
 
+function screenController() {
+  const updateScreen = 0;
+}
+
 const game = gameController();
-
-// Check for win
-function checkForWin(game) {}
-//create player
-
-// create game
-// create fuction that displays player move
