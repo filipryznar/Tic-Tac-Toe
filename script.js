@@ -1,3 +1,27 @@
+// Engage Dialog
+document.addEventListener("DOMContentLoaded", () => {
+  const dialog = document.getElementById("nameDialog");
+  dialog.showModal();
+
+  // Handle form submission
+  const form = dialog.querySelector("form");
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    let playerOneName = document.getElementById("p1").value.trim();
+    let playerTwoName = document.getElementById("p2").value.trim();
+
+    if (!playerOneName) playerOneName = "Player One";
+    if (!playerTwoName) playerTwoName = "Player Two";
+
+    // dialog.addEventListener("close", () => {
+    //   ScreenController(playerOneName, playerTwoName); // Pass player names to ScreenController
+    // });
+
+    dialog.close();
+    ScreenController(playerOneName, playerTwoName);
+  });
+});
+
 // Creating gameboard
 function GameBoard() {
   const rows = 3;
@@ -190,16 +214,21 @@ function gameController(
   };
 }
 
-function ScreenController() {
-  let game = gameController();
+function ScreenController(
+  playerOneName = "Player One",
+  playerTwoName = "Player Two"
+) {
+  let game = gameController(playerOneName, playerTwoName);
   const playerTurnDiv = document.querySelector(".info");
   const boardDiv = document.querySelector(".grid");
   const newGameButton = document.createElement("button");
+  const container = document.querySelector(".container");
   newGameButton.textContent = "New Game";
+  newGameButton.classList.add("newGameButton");
 
   // Add event listenter to newGameButton
   newGameButton.addEventListener("click", () => {
-    game = gameController();
+    game = gameController(playerOneName, playerTwoName);
     updateScreen();
   });
 
@@ -220,7 +249,9 @@ function ScreenController() {
       } else {
         playerTurnDiv.textContent = `${activePlayer.name}'s turn...`;
       }
-      playerTurnDiv.appendChild(newGameButton); // Append "New Game" button only once
+      if (!container.contains(newGameButton)) {
+        container.appendChild(newGameButton); // Append "New Game" button only once
+      }
     } else {
       playerTurnDiv.textContent = `${activePlayer.name}'s turn...`;
     }
@@ -236,7 +267,16 @@ function ScreenController() {
         cellButton.dataset.column = index;
         cellButton.dataset.row = rowIndex;
 
-        cellButton.textContent = cell.getValue();
+        const cellValue = cell.getValue(); // Retrieve the cell value
+        cellButton.textContent = cellValue;
+
+        // Apply styling class based on token value
+        if (cellValue === "X") {
+          cellButton.classList.add("token-x");
+        } else if (cellValue === "O") {
+          cellButton.classList.add("token-o");
+        }
+
         // Apply winning class if part of the winning combination
         if (
           winnerCombination &&

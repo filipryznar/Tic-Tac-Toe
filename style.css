@@ -57,3 +57,86 @@ h1 {
   transform: rotate(20deg); /* Adjust the angle to create a cross effect */
   transform-origin: center;
 }
+.newGameButton {
+  background-color: #0001fe; /* Use your blue color */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.newGameButton:hover {
+  background-color: #080882; /* Slightly darker blue for hover effect */
+}
+
+/* Dialog
+#nameDialog {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+} */
+dialog {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  background-color: #adff2f;
+  border: #0001fe 2px solid;
+  color: #0001fe;
+  font-family: "action_manregular", Courier, monospace;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#confirmBtn {
+  background-color: #0001fe; /* Use your blue color */
+  font-family: "action_manregular", Courier, monospace;
+
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+label {
+  display: flex;
+  flex-direction: column;
+}
+input {
+  max-width: 80%;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Styling for X token */
+.token-x {
+  color: blue;
+}
+
+/* Styling for O token */
+.token-o {
+  color: red;
+}
